@@ -1,41 +1,55 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
+import axios from "axios";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const registeredUsers = [
-    { email: "user@example.com", password: "password123" },
-    { email: "ramoz@gmail.com", password: "1234" },
-  ];
+  // const registeredUsers = [
+  //   { email: "user@example.com", password: "password123" },
+  //   { email: "ramoz@gmail.com", password: "1234" },
+  // ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setError('');
 
-    if (!username || !password) {
+    if (!email || !password) {
       setError("Por favor, complete todos los campos.");
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(username)) {
+    if (!emailRegex.test(email)) {
       setError("Ingrese un correo válido.");
       return;
     }
 
-    const user = registeredUsers.find(user => user.email === username && user.password === password);
-    if (!user) {
-      setError("Correo o contraseña incorrectos.");
-      return;
+    try {
+      // Envía la solicitud POST al backend
+      const response = await axios.post('http://localhost:3001/User/login', {
+        
+        email: email,
+        password: password,
+      }, { withCredentials: true });
+
+      // Si la solicitud es exitosa, navega al home
+      if (response.data.token) {
+        // Guardar el token en localStorage o usarlo como prefieras
+        localStorage.setItem('token', response.data.token);
+        navigate('/home'); // Cambia la ruta si el login es exitoso
+      } else {
+        setError(response.data.message || "Correo o contraseña incorrectos.");
+      }
+    } catch (error) {
+      setError("Ocurrió un error al intentar iniciar sesión.");
+      console.error(error);
     }
-    
-    navigate('/home');
   };
 
   const handleRegisterClick = () => {
@@ -51,8 +65,8 @@ const LoginPage = () => {
           <input 
             type="text" 
             placeholder="Correo" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
             required 
           />
         </div>

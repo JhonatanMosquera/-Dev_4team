@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const Register = () => {
-    const [fullName, setFullName] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -13,14 +14,14 @@ const Register = () => {
         navigate('/login');
     };
 
-    const handleRegisterClick = (e) => {
+    const handleRegisterClick = async (e) => {
         e.preventDefault(); // Evita el comportamiento por defecto del formulario
 
         // Limpiar el mensaje de error
         setError('');
 
         // Validar que los campos no estén vacíos
-        if (!fullName || !email || !password) {
+        if (!name || !email || !password) {
             setError("Por favor, complete todos los campos.");
             return;
         }
@@ -32,12 +33,49 @@ const Register = () => {
             setError("Por favor, ingrese un correo electrónico válido.");
             return;
         }
+        
+        try {
+            // Enviar datos al backend usando axios
+            const response = await axios.post('http://localhost:3001/User/createUser', {
+                name,
+                email,
+                password 
+            });
+    
+            // Verificar si la respuesta fue exitosa
+            if (response.status === 201) {
+                // Guardar el nombre en localStorage
+                localStorage.setItem('userName', name);
+    
+                // Redirigir al home
+                navigate('/home');
+            } else {
+                setError('Error al registrarse. Intente nuevamente.');
+            }
+        } catch (error) {
+            setError('Hubo un error al conectar con el servidor. Intente más tarde.');
+            console.error(error);
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         // Guardar el nombre en localStorage
-        localStorage.setItem('userName', fullName);
 
-        // Redirigir al home
-        navigate('/home'); 
+        //esto aqui lo documente porque no serciar para enviarlo al front oscar pero no se si mas adelante se ocupa
+        // localStorage.setItem('userName', name);
+        
+        //esto tambien lo documente porque no necesitaba que me rediriguiera por el momento a ningun lado don oscar
+        // Redirigir al home 
+        //  navigate('/home'); 
     };
 
     return (
@@ -52,8 +90,8 @@ const Register = () => {
                         <input 
                             className="input" 
                             placeholder="Nombre completo" 
-                            value={fullName}
-                            onChange={(e) => setFullName(e.target.value)}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                         />
                         <label>Correo*</label>
                         <input 
