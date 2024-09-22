@@ -1,91 +1,130 @@
 body {
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .landing-page {
-    width: 100%;
-    height: 100vh;
-    background-color: #e8f5e9;
-  }
-  
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: #f1f1f1;
-  }
-  
-  .logo-image {
-    width: 50px;
-    height: 50px; 
-    border-radius: 50%;
-    object-fit: cover; 
-    margin-right: 10px;
-    vertical-align: middle;
-  }
-  
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  
-  .nav-links {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-  }
-  
-  .create-account {
-    background-color: #1e88e5;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+  font-family: 'Arial', sans-serif;
+}
+
+.landing-page {
+  width: 100%;
+  height: 100vh;
+  background-color: #3780da;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #130fe0be;
+  flex-wrap: wrap; 
+}
+
+.logo-image {
+  width: 50px;
+  height: 50px; 
+  border-radius: 50%;
+  object-fit: cover; 
+  margin-right: 10px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+  flex-wrap: wrap; 
+}
+
+.create-account {
+  background-color: #02233faa;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.main-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 50px;
+  flex-direction: column; 
+}
+
+.text-content h1 {
+  font-size: 2.5em;
+  color: #faf9fb;
+}
+
+.text {
+  font-size: 2.5em;
+  color: #faf9fb;
+}
+
+.text-content p {
+  margin: 20px 0;
+  color: #faf9fb;
+  font-size: 1.2em;
+}
+
+.email-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-direction: column;
+}
+
+.email-form input {
+  padding: 10px;
+  font-size: 1em;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+}
+
+.email-form button {
+  padding: 10px 20px;
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.image-section img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.full-height-image {
+  width: 50%; 
+  height: 100%; 
+  object-fit: cover; 
+}
+
+
+@media (min-width: 768px) {
   .main-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 50px;
+      flex-direction: row; 
   }
-  
-  .text-content h1 {
-    font-size: 2.5em;
-    color: #2e7d32;
-  }
-  
-  .text-content p {
-    margin: 20px 0;
-    font-size: 1.2em;
-  }
-  
   .email-form {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
+      flex-direction: row; 
   }
-  
-  .email-form input {
-    padding: 10px;
-    font-size: 1em;
-    border: 2px solid #ccc;
-    border-radius: 5px;
+}
+
+@media (max-width: 600px) {
+  .text-content h1 {
+      font-size: 1.8em;
   }
-  
-  .email-form button {
-    padding: 10px 20px;
-    background-color: #1e88e5;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  .text-content p {
+      font-size: 1em; 
   }
-  
-  .image-section img {
-    max-width: 100%;
-    border-radius: 10px;
-  }  
+  .navbar {
+      padding: 10px;
+  }
+  .create-account {
+      width: 100%;
+      text-align: center;
+  }
+}
