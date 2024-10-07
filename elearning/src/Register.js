@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import './Register.css';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
@@ -16,9 +16,7 @@ const Register = () => {
 
     const handleRegisterClick = async (e) => {
         e.preventDefault(); // Evita el comportamiento por defecto del formulario
-
-        // Limpiar el mensaje de error
-        setError('');
+        setError(''); // Limpiar el mensaje de error
 
         // Validar que los campos no estén vacíos
         if (!name || !email || !password) {
@@ -28,7 +26,6 @@ const Register = () => {
 
         // Expresión regular para validar el correo electrónico
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if (!emailRegex.test(email)) {
             setError("Por favor, ingrese un correo electrónico válido.");
             return;
@@ -46,7 +43,6 @@ const Register = () => {
             if (response.status === 201) {
                 // Guardar el nombre en localStorage
                 localStorage.setItem('userName', name);
-    
                 // Redirigir al home
                 navigate('/home');
             } else {
@@ -56,26 +52,6 @@ const Register = () => {
             setError('Hubo un error al conectar con el servidor. Intente más tarde.');
             console.error(error);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-        // Guardar el nombre en localStorage
-
-        //esto aqui lo documente porque no serciar para enviarlo al front oscar pero no se si mas adelante se ocupa
-        // localStorage.setItem('userName', name);
-        
-        //esto tambien lo documente porque no necesitaba que me rediriguiera por el momento a ningun lado don oscar
-        // Redirigir al home 
-        //  navigate('/home'); 
     };
 
     return (
@@ -86,22 +62,25 @@ const Register = () => {
                     <p className="text">Usa tu correo para registrarte</p>
                     {error && <div className="error-box"><p className="error-message">{error}</p></div>} {/* Mostrar mensaje de error */}
                     <form className="form">
-                       <label>Nombre*</label>
+                        <label htmlFor="name">Nombre*</label>
                         <input 
+                            id="name" // Agregar id para asociar con el label
                             className="input" 
                             placeholder="Nombre completo" 
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
-                        <label>Correo*</label>
+                        <label htmlFor="email">Correo*</label>
                         <input 
+                            id="email" // Agregar id para asociar con el label
                             className="input" 
                             placeholder="Correo electrónico" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <label>Contraseña*</label>
+                        <label htmlFor="password">Contraseña*</label>
                         <input 
+                            id="password" // Agregar id para asociar con el label
                             className="input" 
                             placeholder="Contraseña" 
                             type="password" 
