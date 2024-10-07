@@ -2,7 +2,6 @@ import express from 'express'
 import morgan from 'morgan'
 import { Port } from './config.js';
 import  userRoutes from './routes/authentication.routes.js';
-import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from "cors"
 

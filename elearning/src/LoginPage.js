@@ -72,15 +72,17 @@ const LoginPage = () => {
         </div>
         {error && <div className="error-box"><p className="error-message">{error}</p></div>}
         <div className="form-group">
-          <label>Contraseña*</label>
-          <input 
-            type="password" 
-            placeholder="Contraseña" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
-          />
-        </div>
+  <label htmlFor="password">Contraseña*</label>
+  <input
+    type="password"
+    id="password" // Asegúrate de incluir un id que coincida con htmlFor en el label
+    placeholder="Contraseña"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    required
+  />
+</div>
+
         <button type="submit" className="btn-login">Ingresar</button>
         <div className="links">
           <button onClick={handleRegisterClick} style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>¿No tienes una cuenta?</button>
