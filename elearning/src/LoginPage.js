@@ -26,11 +26,16 @@ const LoginPage = () => {
         email: email,
         password: password,
       }, { withCredentials: true });
-
+      console.log(response.data.user.role)
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         navigate('/home');
-      } else {
+      } 
+      if (response.data.token && response.data.user.role === "admin") {
+        localStorage.setItem('token', response.data.token);
+        navigate('/AdminDashboard');
+      }
+      else {
         setError(response.data.message || "Correo o contraseña incorrectos.");
       }
     } catch (error) {
