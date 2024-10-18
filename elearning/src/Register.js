@@ -14,30 +14,22 @@ const Register = () => {
     };
 
     const handleRegisterClick = (e) => {
-        e.preventDefault(); // Evita el comportamiento por defecto del formulario
-
-        // Limpiar el mensaje de error
+        e.preventDefault(); 
         setError('');
 
-        // Validar que los campos no estén vacíos
         if (!fullName || !email || !password) {
             setError("Por favor, complete todos los campos.");
             return;
         }
 
-        // Expresión regular para validar el correo electrónico
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailRegex.test(email)) {
             setError("Por favor, ingrese un correo electrónico válido.");
             return;
         }
-
-        // Guardar el nombre en localStorage
         localStorage.setItem('userName', fullName);
-
-        // Redirigir al home
-        navigate('/home'); 
+        navigate('/AdminDashboard'); 
     };
 
     return (
@@ -71,10 +63,9 @@ const Register = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <button className="create-account" onClick={handleRegisterClick}>Registrarse</button>
-                        <p className="subtitle">
-                            Si ya tienes cuenta, puedes iniciar sesión:
+                        <p className="links">
+                            Si ya tienes cuenta, puedes<button className="subtitle"  onClick={handleLoginClick} style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>iniciar sesión</button>
                         </p>
-                        <button className="create-account" onClick={handleLoginClick}>Iniciar sesión</button>
                     </form>
                 </div>
             </div>

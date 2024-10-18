@@ -1,0 +1,241 @@
+/* Estilo general del dashboard */
+.dashboard {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #130fe0be;
+    color: #ecf0f1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .profile {
+    text-align: center;
+  }
+  
+  .profile-img {
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .profile h2 {
+    margin: 10px 0;
+    font-size: 18px;
+  }
+  
+  .sidebar nav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar nav ul li {
+    margin: 20px 0;
+  }
+  
+  .sidebar nav ul li a {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-size: 16px;
+  }
+  
+  .sidebar nav ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Contenido principal del dashboard */
+  .main-content {
+    flex: 1;
+    background-color: #ecf0f1;
+    padding: 20px;
+  }
+  
+  .overview {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .balance-card,
+  .payment-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart {
+    flex: 1;
+    background-color: #fff;
+    margin-left: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .services {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .service-card {
+    background-color: #fff;
+    padding: 20px;
+    flex: 1;
+    margin-right: 20px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .service-card:last-child {
+    margin-right: 0;
+  }
+  
+  /* Estilos específicos para la gestión de cursos */
+  .course-management {
+    margin-top: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .course-management h2 {
+    margin-bottom: 20px;
+    font-size: 22px;
+    color: #34495e;
+  }
+  
+  .course-list ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .course-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .course-list li strong {
+    font-size: 16px;
+    color: #2c3e50;
+  }
+  
+  .course-list button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+
+  .delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .delete-button:hover {
+    background-color: darkred; 
+  }
+  
+  
+  .course-list button:hover {
+    background-color: #c0392b;
+  }
+  
+  .course-list button:first-of-type {
+    background-color: #3498db;
+  }
+  
+  .course-list button:first-of-type:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Estilo del formulario */
+  .course-management form {
+    margin-bottom: 30px;
+  }
+  
+  .course-management form div {
+    margin-bottom: 15px;
+  }
+  
+  .course-management label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #2c3e50;
+  }
+
+  .course-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 2px solid #ccc; 
+  }
+  
+  
+  .course-management input[type="text"],
+  .course-management textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .course-management textarea {
+    resize: vertical;
+    height: 80px;
+  }
+  
+  .course-management button {
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .course-management button:hover {
+    background-color: #27ae60;
+  }
+  
+  /* Ajustes responsive */
+  @media (max-width: 768px) {
+    .overview, .services {
+      flex-direction: column;
+    }
+  
+    .service-card {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  
+    .chart {
+      margin-left: 0;
+    }
+  }
+  

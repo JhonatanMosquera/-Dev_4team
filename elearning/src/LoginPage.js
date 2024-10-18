@@ -9,10 +9,10 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const registeredUsers = [
-    { email: "user@example.com", password: "password123" },
-    { email: "ramoz@gmail.com", password: "1234" },
+    { email: "user@gmail.com", password: "user1234", role: "user" },
+    { email: "admi@gmail.com", password: "Admi1234", role: "admin" },
   ];
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -35,7 +35,7 @@ const LoginPage = () => {
       return;
     }
     
-    navigate('/home');
+    navigate('/AdminDashboard');
   };
 
   const handleRegisterClick = () => {
