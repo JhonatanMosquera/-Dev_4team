@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/JhonatanMosquera/Dev_4team/compare/v1.0.0...v1.1.0) (2024-10-28)
+
+
+### Features
+
+* Back funcionalidad de agregar y listar todos los curso del admin ([036d413](https://github.com/JhonatanMosquera/Dev_4team/commit/036d41349fb7cec7d37f13ff9a82eae0fdb9a5b0))
+
 ## 1.0.0 (2024-10-23)
 
 
