@@ -8,6 +8,7 @@
         storage: storage,
         limits: {
           fileSize: 1 * 1024 * 1024, // Límite de tamaño de archivo: 1 MB
+        
         },
       });
       
