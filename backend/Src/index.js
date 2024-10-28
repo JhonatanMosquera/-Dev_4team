@@ -2,6 +2,7 @@ import express from 'express'
 import morgan from 'morgan'
 import { Port } from './config.js';
 import  userRoutes from './routes/authentication.routes.js';
+import  adminRoutes from './routes/admin.routes.js';
 import cookieParser from 'cookie-parser';
 import cors from "cors"
 
@@ -20,6 +21,7 @@ app.use(cookieParser());
 app.use(morgan('dev'))
 app.use(express.json())
 app.use('/User',userRoutes)
+app.use('/admin',adminRoutes)
 
 
 
