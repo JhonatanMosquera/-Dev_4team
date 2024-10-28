@@ -26,7 +26,6 @@ export const CreateCurso = async (req, res) => {
         }
         
         // Si no hay error, resuelve con el resultado
-        console.log("Imagen subida exitosamente:", result);
         resolve(result);
       });
     
@@ -35,9 +34,9 @@ export const CreateCurso = async (req, res) => {
     });
     
     
-    console.log("Resultado de Cloudinary:", result); // Agrega esta línea
+    
     const imageUrl = result.secure_url;
-    console.log("URL de la imagen subida:", imageUrl);
+   
 
     // Intento de inserción en la base de datos
     try {
