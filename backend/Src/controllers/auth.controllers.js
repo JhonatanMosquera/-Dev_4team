@@ -7,7 +7,7 @@ export const getUsers = async (req, res) => {
         const { rows } = await pool.query('SELECT * FROM users');
         res.json(rows);  // Enviar los resultados como JSON
     } catch (error) {
-        console.error('Error al obtener usuarios:', error);
+       
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
@@ -65,9 +65,9 @@ export const createUser = async (req, res) => {
     } catch (error) {
       //console.log(error);
       if (error?.code ==="23505"){
-          return res.status(409).json({message:"email already exits"})
+          return res.status(409).json({message:"email already exists"})
       }
-      return res.status(500).json({ menssage: "internal server error" });
+      return res.status(500).json({ message: "internal server error" });
     }
   };
 

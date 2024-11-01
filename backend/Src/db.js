@@ -1,5 +1,5 @@
 import pg from "pg"
-import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_USER } from "./config.js"
+import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_USER} from "./config.js"
 
 export const pool = new pg.Pool({
     user:  DB_USER,
@@ -7,6 +7,7 @@ export const pool = new pg.Pool({
     password: DB_PASSWORD,
     database: DB_DATABASE,
     port: 5432,// El puerto por defecto de PostgreSQL
+    ssl: { rejectUnauthorized: false }  // Ignora la validación del certificado SSL
  })
 //  console.log(DB_USER)
 //  console.log(DB_HOST)

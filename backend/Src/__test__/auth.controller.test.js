@@ -102,9 +102,3 @@ describe('User Controller', () => {
 });
 
 
-// Nota: hay dos pruebas fallando por falta de una buena ortografia en los mesajes,
-// si vemos por ejemplo la salida espera un message y la respuesta de su api es menssage..
-// Deben ajustar bien su logica ya que esto es algo delicado ya a nivel laboral
-// Como sugerencia no ajusten el test ya que esto es lo que les indica que tal esta su app
-// ajusten su logica para que se adapte a los test, es buena practica primero hacer test y luego la logica
-// ya que eso indica basicamente si lo que programas va acorde a los parametros de los test.

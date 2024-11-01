@@ -1,5 +1,5 @@
     import { Router } from 'express';
-    import {CreateCurso,GetCursos} from '../controllers/admin.controller.js'
+    import {CreateCurso,GetCursos,deleteCursos,updateCurso,getCurso} from '../controllers/admin.controller.js'
     import multer from 'multer';
 
     // Configuración de multer para guardar en memoria temporal
@@ -16,5 +16,7 @@
 
     router.post('/add-curso', upload.single('image_url'), CreateCurso); // Asegúrate de que este nombre sea el correcto
     router.get('/all-curso', GetCursos)
-
+    router.delete('/delete-curso/:id',deleteCursos)
+    router.put('/update-curso/:id',upload.single('image_url'),updateCurso)
+    router.get('/curso/:id', getCurso)
     export default router;
