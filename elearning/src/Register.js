@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import './Register.css';
+import React, { useState } from "react"; 
+import './style/Register.css';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
 const Register = () => {
-    const [fullName, setFullName] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -13,23 +14,44 @@ const Register = () => {
         navigate('/login');
     };
 
-    const handleRegisterClick = (e) => {
-        e.preventDefault(); 
-        setError('');
+    const handleRegisterClick = async (e) => {
+        e.preventDefault(); // Evita el comportamiento por defecto del formulario
+        setError(''); // Limpiar el mensaje de error
 
-        if (!fullName || !email || !password) {
+        // Validar que los campos no estén vacíos
+        if (!name || !email || !password) {
             setError("Por favor, complete todos los campos.");
             return;
         }
 
+        // Expresión regular para validar el correo electrónico
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if (!emailRegex.test(email)) {
             setError("Por favor, ingrese un correo electrónico válido.");
             return;
         }
-        localStorage.setItem('userName', fullName);
-        navigate('/AdminDashboard'); 
+        
+        try {
+            // Enviar datos al backend usando axios
+            const response = await axios.post('http://localhost:3001/User/createUser', {
+                name,
+                email,
+                password 
+            });
+    
+            // Verificar si la respuesta fue exitosa
+            if (response.status === 201) {
+                // Guardar el nombre en localStorage
+                localStorage.setItem('userName', name);
+                // Redirigir al home
+                navigate('/UserDashboard');
+            } else {
+                setError('Error al registrarse. Intente nuevamente.');
+            }
+        } catch (error) {
+            setError('Hubo un error al conectar con el servidor. Intente más tarde.');
+            console.error(error);
+        }
     };
 
     return (
@@ -40,22 +62,25 @@ const Register = () => {
                     <p className="text">Usa tu correo para registrarte</p>
                     {error && <div className="error-box"><p className="error-message">{error}</p></div>} {/* Mostrar mensaje de error */}
                     <form className="form">
-                       <label>Nombre*</label>
+                        <label htmlFor="name">Nombre*</label>
                         <input 
+                            id="name" // Agregar id para asociar con el label
                             className="input" 
                             placeholder="Nombre completo" 
-                            value={fullName}
-                            onChange={(e) => setFullName(e.target.value)}
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
                         />
-                        <label>Correo*</label>
+                        <label htmlFor="email">Correo*</label>
                         <input 
+                            id="email" // Agregar id para asociar con el label
                             className="input" 
                             placeholder="Correo electrónico" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                        <label>Contraseña*</label>
+                        <label htmlFor="password">Contraseña*</label>
                         <input 
+                            id="password" // Agregar id para asociar con el label
                             className="input" 
                             placeholder="Contraseña" 
                             type="password" 
@@ -63,9 +88,10 @@ const Register = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                         <button className="create-account" onClick={handleRegisterClick}>Registrarse</button>
-                        <p className="links">
-                            Si ya tienes cuenta, puedes<button className="subtitle"  onClick={handleLoginClick} style={{ background: 'none', border: 'none', color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>iniciar sesión</button>
+                        <p className="subtitle">
+                            Si ya tienes cuenta, puedes iniciar sesión:
                         </p>
+                        <button className="create-account" onClick={handleLoginClick}>Iniciar sesión</button>
                     </form>
                 </div>
             </div>

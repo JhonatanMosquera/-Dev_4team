@@ -1,24 +1,106 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import './style/User.css';
+import CoursesUser from './CoursesUser';
 
 function UserDashboard() {
-  const courses = [
-    { id: 1, title: "Curso de React", description: "Aprende los fundamentos de React." },
-    { id: 2, title: "Curso de JavaScript", description: "Domina JavaScript desde cero." },
-    { id: 3, title: "Curso de Python", description: "Introducción a la programación con Python." },
-  ];
+  const [courses, setCourses] = useState([]);
+  const [view, setView] = useState('dashboard');
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/admin/all-curso');
+      const data = await response.json();
+      setCourses(data);
+    } catch (error) {
+      console.error("Error al obtener los cursos:", error);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    window.location.href = '/login'; 
+  };
+
+  // Función para inscribir al usuario en un curso
+  const enrollInCourse = async (courseId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/user/enroll-curso/${courseId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        alert('Inscripción exitosa!');
+        // Puedes agregar aquí una lógica para actualizar el estado si es necesario
+      }
+    } catch (error) {
+      console.error("Error al inscribir al curso:", error);
+    }
+  };
+
+  const CourseList = ({ courses, onEnroll }) => {
+    return (
+      <div className="course-list">
+        <h2>Cursos disponibles</h2>
+        <ul>
+          {courses.map(course => (
+            <li key={course.id}>
+              {course.image && (
+                <img src={course.image} alt={course.title} className="course-img" />
+              )}
+              <strong>{course.title}</strong> - {course.description}
+              {/* Solo mostramos el botón de inscripción */}
+              <button onClick={() => onEnroll(course.id)}>Inscribirse</button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
 
   return (
-    <div>
-      <h1>Panel de Usuario</h1>
-      <h2>Cursos Disponibles</h2>
-      <ul>
-        {courses.map(course => (
-          <li key={course.id}>
-            <strong>{course.title}</strong> - {course.description}
-            <button>Inscribirse</button>
-          </li>
-        ))}
-      </ul>
+    <div className="dashboard">
+      <aside className="sidebar">
+        <div className="profile">
+          <img src="https://i.pinimg.com/564x/05/5a/91/055a91979264664a1ee12b9453610d82.jpg" alt="profile" height={150} width={150} className="profile-img" />
+          <h2>Usuario</h2>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="#" onClick={() => setView('dashboard')}>Dashboard</a></li>
+            <li><a href="#" onClick={() => setView('CoursesUser')}>Cursos disponibles</a></li>
+            <li><a href="#">Mis cursos</a></li>
+            <li><a href="#" onClick={handleLogout}>Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </aside>
+      
+      <main className="main-content">
+        {view === 'dashboard' && (
+          <>
+            <div className="overview">
+              <div className="balance-card">
+                <div className="circle-chart">
+                  <p>Bienvenido al Dashboard</p>
+                </div>
+              </div>
+              <div className="chart">
+                <h3>Evaluaciones de los cursos</h3>
+                <div className="bar-chart"></div>
+              </div>
+            </div>
+          </>
+        )}
+
+        {view === 'CoursesUser' && (
+          <CourseList courses={courses} onEnroll={enrollInCourse} />
+        )}
+      </main>
     </div>
   );
 }

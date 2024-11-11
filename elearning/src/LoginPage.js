@@ -1,41 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css';
+import './style/LoginPage.css';
+import axios from "axios";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const registeredUsers = [
-    { email: "user@gmail.com", password: "user1234", role: "user" },
-    { email: "admi@gmail.com", password: "Admi1234", role: "admin" },
-  ];
-  
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
     setError('');
-
-    if (!username || !password) {
+    if (!email || !password) {
       setError("Por favor, complete todos los campos.");
       return;
     }
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(username)) {
+    if (!emailRegex.test(email)) {
       setError("Ingrese un correo válido.");
       return;
     }
-
-    const user = registeredUsers.find(user => user.email === username && user.password === password);
-    if (!user) {
-      setError("Correo o contraseña incorrectos.");
-      return;
+    try {
+      const response = await axios.post('http://localhost:3001/User/login', {
+        email: email,
+        password: password,
+      }, { withCredentials: true });
+      console.log(response.data.user.role)
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        navigate('/UserDashboard');
+      } 
+      if (response.data.token && response.data.user.role === "admin") {
+        localStorage.setItem('token', response.data.token);
+        navigate('/AdminDashboard');
+      }
+      else {
+        setError(response.data.message || "Correo o contraseña incorrectos.");
+      }
+    } catch (error) {
+      setError("Ocurrió un error al intentar iniciar sesión.");
+      console.error(error);
     }
-    
-    navigate('/AdminDashboard');
   };
 
   const handleRegisterClick = () => {
@@ -47,24 +53,26 @@ const LoginPage = () => {
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Ingresar a tu cuenta!</h2>
         <div className="form-group">
-          <label>Correo electrónico*</label>
+          <label htmlFor="email">Correo electrónico*</label>
           <input 
             type="text" 
+            id="email" // Asegúrate de incluir un id que coincida con htmlFor en el label
             placeholder="Correo" 
-            value={username} 
-            onChange={(e) => setUsername(e.target.value)} 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
             required 
           />
         </div>
         {error && <div className="error-box"><p className="error-message">{error}</p></div>}
         <div className="form-group">
-          <label>Contraseña*</label>
-          <input 
-            type="password" 
-            placeholder="Contraseña" 
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-            required 
+          <label htmlFor="password">Contraseña*</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <button type="submit" className="btn-login">Ingresar</button>

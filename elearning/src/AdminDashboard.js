@@ -1,32 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import './AdminDashboard.css';
+import './style/AdminDashboard.css';
+import ViewCourses from './ViewCourses';
 
 function AdminDashboard() {
-  // Estado para los cursos
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [view, setView] = useState('dashboard');
 
-  // Agregar o editar curso
-  const addCourse = (course) => {
-    if (selectedCourse) {
-      setCourses(courses.map(c => c.id === selectedCourse.id ? course : c));
-      setSelectedCourse(null); // Reset after edit
-    } else {
-      setCourses([...courses, { ...course, id: Date.now() }]);
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/admin/all-curso');
+      const data = await response.json();
+      setCourses(data);
+    } catch (error) {
+      console.error("Error al obtener los cursos:", error);
+    }
+  };
+  
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    window.location.href = '/login'; 
+  };
+
+  const addCourse = async (course) => {
+    try {
+      const response = selectedCourse
+        ? await fetch('http://localhost:3001/admin/add-curso', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(course),
+          })
+        : await fetch('http://localhost:3001/admin/add-curso', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...course, id: Date.now() }),
+          });
+
+      if (response.ok) {
+        fetchCourses();
+        setSelectedCourse(null);
+      }
+    } catch (error) {
+      console.error("Error al agregar/editar el curso:", error);
     }
   };
 
-  // Eliminar curso
-  const deleteCourse = (id) => {
-    setCourses(courses.filter(course => course.id !== id));
+  const deleteCourse = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/admin/delete-curso/${id}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        fetchCourses();
+      }
+    } catch (error) {
+      console.error("Error al eliminar el curso:", error);
+    }
   };
 
-  // Editar curso
-  const editCourse = (course) => {
-    setSelectedCourse(course);
-  };
-
-  // Formulario para agregar/editar cursos
   const CourseForm = ({ selectedCourse, onSubmit }) => {
     const [course, setCourse] = useState({ title: '', description: '', image: null });
 
@@ -46,7 +85,7 @@ function AdminDashboard() {
       if (file) {
         const reader = new FileReader();
         reader.onloadend = () => {
-          setCourse({ ...course, image: reader.result }); // Guardar la imagen como base64
+          setCourse({ ...course, image: reader.result });
         };
         reader.readAsDataURL(file);
       }
@@ -62,39 +101,21 @@ function AdminDashboard() {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Título</label>
-          <input
-            type="text"
-            name="title"
-            value={course.title}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" name="title" value={course.title} onChange={handleChange} required />
         </div>
         <div>
           <label>Descripción</label>
-          <textarea
-            name="description"
-            value={course.description}
-            onChange={handleChange}
-            required
-          />
+          <textarea name="description" value={course.description} onChange={handleChange} required />
         </div>
         <div>
           <label>Imagen del curso</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
+          <input type="file" accept="image/*" onChange={handleFileChange} />
         </div>
-        <button type="submit">
-          {selectedCourse ? 'Actualizar curso' : 'Agregar curso'}
-        </button>
+        <button type="submit">{selectedCourse ? 'Actualizar curso' : 'Agregar curso'}</button>
       </form>
     );
   };
 
-  // Lista de cursos
   const CourseList = ({ courses, onDelete, onEdit }) => {
     return (
       <div className="course-list">
@@ -103,7 +124,7 @@ function AdminDashboard() {
           {courses.map(course => (
             <li key={course.id}>
               {course.image && (
-                <img src={course.image} alt={course.title} className="course-img"/>
+                <img src={course.image} alt={course.title} className="course-img" />
               )}
               <strong>{course.title}</strong> - {course.description}
               <button onClick={() => onEdit(course)}>Editar</button>
@@ -119,43 +140,46 @@ function AdminDashboard() {
     <div className="dashboard">
       <aside className="sidebar">
         <div className="profile">
-          <img src="https://i.pinimg.com/564x/05/5a/91/055a91979264664a1ee12b9453610d82.jpg" alt="profile" height={150} width={150} className="profile-img" />
+          <img src="/Admin.jpg" alt="profile" height={150} width={150} className="profile-img" />
           <h2>Administrador</h2>
           <p>General</p>
         </div>
         <nav>
           <ul>
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Ver cursos</a></li>
+            <li><a href="#" onClick={() => setView('dashboard')}>Dashboard</a></li>
+            <li><a href="#" onClick={() => setView('viewCourses')}>Ver cursos</a></li>
             <li><a href="#">Evaluaciones</a></li>
-            <li><a href="#">Cerrar sesión</a></li>
+            <li><a href="#" onClick={handleLogout}>Cerrar sesión</a></li>
           </ul>
         </nav>
       </aside>
       
       <main className="main-content">
-        <div className="overview">
-          <div className="balance-card">
-            <div className="circle-chart">
-              <p>Ver cursos</p>
+        {view === 'dashboard' && (
+          <>
+            <div className="overview">
+              <div className="balance-card">
+                <div className="circle-chart">
+                  <p>Bienvenido al Dashboard</p>
+                </div>
+              </div>
+              <div className="chart">
+                <h3>Evaluaciones de los cursos</h3>
+                <div className="bar-chart"></div>
+              </div>
             </div>
-          </div>
-          <div className="chart">
-            <h3>Evaluaciones de los cursos</h3>
-            <div className="bar-chart"></div>
-          </div>
-        </div>
 
-        {/* Sección de Administración de Cursos */}
-        <section className="course-management">
-          <h2>Agregar cursos</h2>
-          
-          {/* Formulario para agregar/editar cursos */}
-          <CourseForm selectedCourse={selectedCourse} onSubmit={addCourse} />
+            <section className="course-management">
+              <h2>Agregar cursos</h2>
+              <CourseForm selectedCourse={selectedCourse} onSubmit={addCourse} />
+              <CourseList courses={courses} onDelete={deleteCourse} onEdit={setSelectedCourse} />
+            </section>
+          </>
+        )}
 
-          {/* Lista de cursos */}
-          <CourseList courses={courses} onDelete={deleteCourse} onEdit={editCourse} />
-        </section>
+        {view === 'viewCourses' && (
+          <ViewCourses courses={courses} onDelete={deleteCourse} onEdit={setSelectedCourse} />
+        )}
       </main>
     </div>
   );
