@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css';
+import './style/LoginPage.css';
 import axios from "axios";
 
 const LoginPage = () => {
@@ -29,7 +29,7 @@ const LoginPage = () => {
       console.log(response.data.user.role)
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        navigate('/home');
+        navigate('/UserDashboard');
       } 
       if (response.data.token && response.data.user.role === "admin") {
         localStorage.setItem('token', response.data.token);
