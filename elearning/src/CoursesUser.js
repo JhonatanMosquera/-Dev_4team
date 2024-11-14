@@ -3,6 +3,7 @@ import './style/CoursesUser.css';
 
 function CoursesView() {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true); // Estado de carga
   const token = localStorage.getItem('token');
   
   const base64Payload = token.split('.')[1];
@@ -17,12 +18,16 @@ function CoursesView() {
 
   // Función para obtener los cursos desde el backend
   const fetchCourses = async () => {
+    setLoading(true); // Iniciar carga
     try {
       const response = await fetch('http://localhost:3001/admin/all-curso');
       const data = await response.json();
-      setCourses(data);  // Guardamos los cursos obtenidos en el estado
+      setCourses(Array.isArray(data) ? data : []); // Asegura que sea un array
     } catch (error) {
       console.error("Error al obtener los cursos:", error);
+      setCourses([]); // En caso de error, asigna un array vacío
+    } finally {
+      setLoading(false); // Finalizar carga
     }
   };
 
@@ -43,9 +48,10 @@ function CoursesView() {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-        },body: JSON.stringify(dataToSend) // Convertimos los datos a JSON
+        },
+        body: JSON.stringify(dataToSend) // Convertimos los datos a JSON
       });
-      console.log(response)
+
       if (response.ok) {
         alert('Inscripción exitosa!');
       } else {
@@ -61,8 +67,10 @@ function CoursesView() {
       <h1>Cursos Disponibles</h1>
 
       <div className="courses-list">
-        {courses.length === 0 ? (
-          <p>Cargando cursos...</p>
+        {loading ? (
+          <p>Cargando cursos...</p> // Mensaje de carga
+        ) : courses.length === 0 ? (
+          <p>No hay cursos disponibles</p> // Mensaje cuando no hay cursos
         ) : (
           courses.map(course => (
             <div key={course.id} className="course-card">
@@ -81,3 +89,4 @@ function CoursesView() {
 }
 
 export default CoursesView;
+

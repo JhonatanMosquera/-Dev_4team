@@ -37,34 +37,35 @@ export const RegisterCurso = async (req, res) => {
 };
 
 export const getUserCourses = async (req, res) => {
-    try {
-      const { user_id } = req.body;
-  
-      // Verificar que el user_id esté presente
-      if (!user_id) {
-        return res.status(400).json({ message: "Falta el ID del usuario." });
-      }
-  
-      // Consulta para obtener los cursos en los que el usuario está inscrito
-      const { rows: courses } = await pool.query(
-        `
-        SELECT courses.id, courses.title, courses.description, courses.image_url, courses.created_at
-        FROM enrollments
-        JOIN courses ON enrollments.course_id = courses.id
-        WHERE enrollments.user_id = $1
-        `,
-        [user_id]
-      );
-  
-      // Comprobar si el usuario no tiene cursos inscritos
-      if (courses.length === 0) {
-        return res.status(404).json({ message: "El usuario no está inscrito en ningún curso." });
-      }
-  
-      // Devolver los cursos encontrados
-      return res.status(200).json(courses);
-    } catch (error) {
-      console.error("Error al obtener los cursos del usuario:", error.message);
-      return res.status(500).json({ message: "Error al obtener los cursos del usuario" });
+  try {
+    const { user_id } = req.params; // Tomamos user_id de los parámetros de la URL
+    
+    // Verificar que el user_id esté presente
+    if (!user_id) {
+      return res.status(400).json({ message: "Falta el ID del usuario." });
     }
-  };
+
+    // Consulta para obtener los cursos en los que el usuario está inscrito
+    const { rows: courses } = await pool.query(
+      `
+      SELECT courses.id, courses.title, courses.description, courses.image_url, courses.created_at
+      FROM enrollments
+      JOIN courses ON enrollments.course_id = courses.id
+      WHERE enrollments.user_id = $1
+      `,
+      [user_id]
+    );
+
+    // Comprobar si el usuario no tiene cursos inscritos
+    if (courses.length === 0) {
+      return res.status(404).json({ message: "El usuario no está inscrito en ningún curso." });
+    }
+
+    // Devolver los cursos encontrados
+    return res.status(200).json(courses);
+  } catch (error) {
+    console.error("Error al obtener los cursos del usuario:", error.message);
+    return res.status(500).json({ message: "Error al obtener los cursos del usuario" });
+  }
+};
+

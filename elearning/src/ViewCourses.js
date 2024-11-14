@@ -3,15 +3,20 @@ import './style/ViewCourses.css';
 
 function ViewCourses() {
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true); // Estado de carga
 
   useEffect(() => {
     const fetchCourses = async () => {
+      setLoading(true); // Iniciar carga
       try {
         const response = await fetch('http://localhost:3001/admin/all-curso');
         const data = await response.json();
-        setCourses(data);
+        setCourses(Array.isArray(data) ? data : []); // Asegura que sea un array
       } catch (error) {
         console.error("Error al obtener los cursos:", error);
+        setCourses([]); // En caso de error, asigna un array vacío
+      } finally {
+        setLoading(false); // Finalizar carga
       }
     };
     fetchCourses();
@@ -19,7 +24,6 @@ function ViewCourses() {
 
   const handleDelete = async (courseId) => {
     try {
-      // Llamada para eliminar el curso
       const response = await fetch(`http://localhost:3001/admin/delete-curso/${courseId}`, {
         method: 'DELETE',
       });
@@ -37,17 +41,17 @@ function ViewCourses() {
   };
 
   const handleEdit = (courseId) => {
-    // Redirigir o abrir un formulario de edición para el curso
     console.log("Editar curso con ID:", courseId);
-    // Puedes redirigir a una página de edición o mostrar un formulario
-    // Por ejemplo, usando `navigate('/edit-course', { state: { courseId } })`
+    // Redirigir o abrir un formulario de edición para el curso
   };
 
   return (
     <div className="view-courses">
       <h2>Lista de Cursos</h2>
-      {courses.length === 0 ? (
-        <p>No hay cursos disponibles</p>
+      {loading ? (
+        <p>Cargando cursos...</p> // Mensaje de carga
+      ) : courses.length === 0 ? (
+        <p>No hay cursos disponibles</p> // Mensaje cuando no hay cursos
       ) : (
         <ul>
           {courses.map((course) => (
@@ -58,7 +62,6 @@ function ViewCourses() {
                 <p>{course.description}</p>
               </div>
               <div className="course-actions">
-                {/* <button onClick={() => handleEdit(course.id)} className="edit-btn">Editar</button> */}
                 <button onClick={() => handleDelete(course.id)} className="delete-btn">Eliminar</button>
               </div>
             </li>

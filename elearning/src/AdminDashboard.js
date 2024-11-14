@@ -6,6 +6,7 @@ function AdminDashboard() {
   const [courses, setCourses] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [view, setView] = useState('dashboard');
+  const [loading, setLoading] = useState(true); // Estado de carga
   const token = localStorage.getItem('token');
   
   const base64Payload = token.split('.')[1];
@@ -18,12 +19,16 @@ function AdminDashboard() {
   }, []);
 
   const fetchCourses = async () => {
+    setLoading(true); // Iniciar carga
     try {
       const response = await fetch('http://localhost:3001/admin/all-curso');
       const data = await response.json();
-      setCourses(data);
+      setCourses(Array.isArray(data) ? data : []); // Asegura que sea un array
     } catch (error) {
       console.error("Error al obtener los cursos:", error);
+      setCourses([]); // En caso de error, asigna un array vacío
+    } finally {
+      setLoading(false); // Finalizar carga
     }
   };
 
@@ -41,7 +46,6 @@ function AdminDashboard() {
     formData.append('image_url', image); // Agregar la imagen
     
     try {
-      
       const url = selectedCourse
         ? `http://localhost:3001/admin/update-curso/${course.id}` // Ruta para actualizar
         : 'http://localhost:3001/admin/add-curso'; // Ruta para agregar
@@ -61,6 +65,7 @@ function AdminDashboard() {
       console.error("Error al agregar/editar el curso:", error);
     }
   };
+
   const deleteCourse = async (id) => {
     try {
       const response = await fetch(`http://localhost:3001/admin/delete-curso/${id}`, {
@@ -118,16 +123,19 @@ function AdminDashboard() {
           <label>Imagen del curso</label>
           <input type="file" accept="image/*" onChange={handleFileChange} />
         </div>
-         {/* Campo oculto para el ID del curso */}
-  {selectedCourse && (
-    <input type="hidden" name="id" value={selectedCourse.id} />
-  )}
+        {selectedCourse && (
+          <input type="hidden" name="id" value={selectedCourse.id} />
+        )}
         <button type="submit">{selectedCourse ? 'Actualizar curso' : 'Agregar curso'}</button>
       </form>
     );
   };
 
   const CourseList = ({ courses, onDelete, onEdit }) => {
+    if (courses.length === 0) {
+      return <p>No hay cursos disponibles.</p>; // Mostrar mensaje cuando no hay cursos
+    }
+
     return (
       <div className="course-list">
         <h2>Gestión de cursos</h2>
@@ -137,7 +145,7 @@ function AdminDashboard() {
               {course.image && (
                 <img src={course.image} alt={course.title} className="course-img" />
               )}
-              <strong>{course.title}</strong>  {course.description}
+              <strong>{course.title}</strong> {course.description}
               <button onClick={() => onEdit(course)}>Editar</button>
               <button className="delete-button" onClick={() => onDelete(course.id)}>Eliminar</button>
             </li>
@@ -153,20 +161,20 @@ function AdminDashboard() {
         <div className="profile">
           <img src="/Admin.jpg" alt="profile" height={150} width={150} className="profile-img" />
           <h2>Administrador</h2>
-          <p>General</p>
         </div>
         <nav>
           <ul>
             <li><a href="#" onClick={() => setView('dashboard')}>Dashboard</a></li>
             <li><a href="#" onClick={() => setView('viewCourses')}>Ver cursos</a></li>
-            <li><a href="#">Evaluaciones</a></li>
             <li><a href="#" onClick={handleLogout}>Cerrar sesión</a></li>
           </ul>
         </nav>
       </aside>
       
       <main className="main-content">
-        {view === 'dashboard' && (
+        {loading ? (
+          <p>Cargando cursos...</p> // Mostrar mensaje mientras se cargan los cursos
+        ) : view === 'dashboard' ? (
           <>
             <div className="overview">
               <div className="balance-card">
@@ -186,9 +194,7 @@ function AdminDashboard() {
               <CourseList courses={courses} onDelete={deleteCourse} onEdit={setSelectedCourse} />
             </section>
           </>
-        )}
-
-        {view === 'viewCourses' && (
+        ) : (
           <ViewCourses courses={courses} onDelete={deleteCourse} onEdit={setSelectedCourse} />
         )}
       </main>
