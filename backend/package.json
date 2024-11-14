@@ -5,8 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+
     "start": "node Src/index.js",
     "dev": "nodemon Src/index.js",
+
     "test": "jest"
   },
   "keywords": [],
