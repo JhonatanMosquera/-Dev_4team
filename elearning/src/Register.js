@@ -1,5 +1,5 @@
 import React, { useState } from "react"; 
-import './Register.css';
+import './style/Register.css';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
@@ -44,7 +44,7 @@ const Register = () => {
                 // Guardar el nombre en localStorage
                 localStorage.setItem('userName', name);
                 // Redirigir al home
-                navigate('/home');
+                navigate('/UserDashboard');
             } else {
                 setError('Error al registrarse. Intente nuevamente.');
             }
