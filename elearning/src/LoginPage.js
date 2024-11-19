@@ -29,11 +29,11 @@ const LoginPage = () => {
       console.log(response.data.user.role)
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        navigate('/userDashboard');
+        navigate('/');
       } 
       if (response.data.token && response.data.user.role === "admin") {
         localStorage.setItem('token', response.data.token);
-        navigate('/AdminDashboard');
+        navigate('/');
       }
       else {
         setError(response.data.message || "Correo o contraseña incorrectos.");
