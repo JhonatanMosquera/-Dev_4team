@@ -8,7 +8,12 @@ function UserDashboard() {
   const [view, setView] = useState('MyCourses'); // Cambia 'dashboard' por 'MyCourses'
   const [id, setId] = useState(5);
   const [loading, setLoading] = useState(true); // Estado de carga
-
+  const token = localStorage.getItem('token');
+  
+  const base64Payload = token.split('.')[1];
+  const payload = Buffer.from(base64Payload, 'base64').toString('utf-8');
+  const jsonPayload = JSON.parse(payload);
+  const user_ids = jsonPayload.id;
   useEffect(() => {
     fetchCourses();
   }, []);
@@ -16,7 +21,7 @@ function UserDashboard() {
   const fetchCourses = async () => {
     setLoading(true); // Inicia la carga
     try {
-      const response = await fetch('http://localhost:3001/admin/all-curso');
+      const response = await fetch('https://dev-4team.onrender.com/admin/all-curso');
       const data = await response.json();
       setCourses(Array.isArray(data) ? data : []); // Asegura que data sea un array
     } catch (error) {
@@ -35,10 +40,10 @@ function UserDashboard() {
   const enrollInCourse = async (courseId) => {
     const dataToSend = {
       course_id: courseId,
-      user_id: id
+      user_id: user_ids
     };
     try {
-      const response = await fetch('http://localhost:3001/user/new-registerCurso', {
+      const response = await fetch('https://dev-4team.onrender.com/user/new-registerCurso', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
