@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.0.0](https://github.com/JhonatanMosquera/Dev_4team/compare/v1.1.0...v2.0.0) (2024-11-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* rediseño de la API principal_ (breaking change)
+
+### Features
+
+* rediseño de la API principal_ (breaking change) ([aafc26c](https://github.com/JhonatanMosquera/Dev_4team/commit/aafc26c5c863c12fb691588fff7eeeb3bef74140))
+
+
+### Bug Fixes
+
+* se areglaron bug de la vista admin y user ([c188dda](https://github.com/JhonatanMosquera/Dev_4team/commit/c188ddae4759251cf5ce01008a12125cb641c2a5))
+
 ## [1.1.0](https://github.com/JhonatanMosquera/Dev_4team/compare/v1.0.0...v1.1.0) (2024-10-28)
 
 
