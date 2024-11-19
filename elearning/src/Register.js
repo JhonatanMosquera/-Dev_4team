@@ -33,7 +33,7 @@ const Register = () => {
         
         try {
             // Enviar datos al backend usando axios
-            const response = await axios.post('http://localhost:3001/User/createUser', {
+            const response = await axios.post('https://dev-4team.onrender.com/User/createUser', {
                 name,
                 email,
                 password 

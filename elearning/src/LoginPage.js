@@ -22,7 +22,7 @@ const LoginPage = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:3001/User/login', {
+      const response = await axios.post('https://dev-4team.onrender.com/User/login', {
         email: email,
         password: password,
       }, { withCredentials: true });

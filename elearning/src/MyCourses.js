@@ -10,16 +10,20 @@ function MyCourses() {
   const base64Payload = token.split('.')[1];
   const payload = Buffer.from(base64Payload, 'base64').toString('utf-8');
   const jsonPayload = JSON.parse(payload);
-  const id = jsonPayload.id;
+
+  const user_id = jsonPayload.id;
+
   useEffect(() => {
     fetchUserCourses();
   }, []);
 
   const fetchUserCourses = async () => {
     try {
-      console.log(id)
-      const userId = 5; // ID del usuario, reemplaza este valor con el ID correcto
-      const response = await fetch(`http://localhost:3001/user/My-course/${userId}`, {
+
+      console.log(user_id)
+      // const userId = 5; // ID del usuario, reemplaza este valor con el ID correcto
+      const response = await fetch(`https://dev-4team.onrender.com/user/My-course/${user_id}`, {
+
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -9,7 +9,9 @@ function ViewCourses() {
     const fetchCourses = async () => {
       setLoading(true); // Iniciar carga
       try {
-        const response = await fetch('http://localhost:3001/admin/all-curso');
+
+        const response = await fetch('https://dev-4team.onrender.com/admin/all-curso');
+
         const data = await response.json();
         setCourses(Array.isArray(data) ? data : []); // Asegura que sea un array
       } catch (error) {
@@ -24,7 +26,9 @@ function ViewCourses() {
 
   const handleDelete = async (courseId) => {
     try {
-      const response = await fetch(`http://localhost:3001/admin/delete-curso/${courseId}`, {
+
+      const response = await fetch(`https://dev-4team.onrender.com/admin/delete-curso/${courseId}`, {
+
         method: 'DELETE',
       });
 

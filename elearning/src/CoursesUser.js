@@ -20,7 +20,9 @@ function CoursesView() {
   const fetchCourses = async () => {
     setLoading(true); // Iniciar carga
     try {
-      const response = await fetch('http://localhost:3001/admin/all-curso');
+
+      const response = await fetch('https://dev-4team.onrender.com/admin/all-curso');
+
       const data = await response.json();
       setCourses(Array.isArray(data) ? data : []); // Asegura que sea un array
     } catch (error) {
@@ -43,7 +45,9 @@ function CoursesView() {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/user/new-registerCurso`, {
+
+      const response = await fetch(`https://dev-4team.onrender.com/user/new-registerCurso`, {
+
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

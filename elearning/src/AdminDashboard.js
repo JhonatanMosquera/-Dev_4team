@@ -21,7 +21,9 @@ function AdminDashboard() {
   const fetchCourses = async () => {
     setLoading(true); // Iniciar carga
     try {
-      const response = await fetch('http://localhost:3001/admin/all-curso');
+
+      const response = await fetch('https://dev-4team.onrender.com/admin/all-curso');
+
       const data = await response.json();
       setCourses(Array.isArray(data) ? data : []); // Asegura que sea un array
     } catch (error) {
@@ -33,6 +35,9 @@ function AdminDashboard() {
   };
 
   const handleLogout = () => {
+
+    
+
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     window.location.href = '/'; 
@@ -47,8 +52,10 @@ function AdminDashboard() {
     
     try {
       const url = selectedCourse
-        ? `http://localhost:3001/admin/update-curso/${course.id}` // Ruta para actualizar
-        : 'http://localhost:3001/admin/add-curso'; // Ruta para agregar
+
+        ? `https://dev-4team.onrender.com/admin/update-curso/${course.id}` // Ruta para actualizar
+        : 'https://dev-4team.onrender.com/admin/add-curso'; // Ruta para agregar
+
   
       const method = selectedCourse ? 'PUT' : 'POST'; // Método PUT si estamos actualizando
   
@@ -68,7 +75,9 @@ function AdminDashboard() {
 
   const deleteCourse = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/admin/delete-curso/${id}`, {
+
+      const response = await fetch(`https://dev-4team.onrender.com/admin/delete-curso/${id}`, {
+
         method: 'DELETE',
       });
       if (response.ok) {
