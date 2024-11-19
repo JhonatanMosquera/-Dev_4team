@@ -43,8 +43,9 @@ const Register = () => {
             if (response.status === 201) {
                 // Guardar el nombre en localStorage
                 localStorage.setItem('userName', name);
+                localStorage.setItem('token', response.data.token);
                 // Redirigir al home
-                navigate('/UserDashboard');
+                navigate('/userDashboard');
             } else {
                 setError('Error al registrarse. Intente nuevamente.');
             }

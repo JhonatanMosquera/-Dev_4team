@@ -29,7 +29,7 @@ const LoginPage = () => {
       console.log(response.data.user.role)
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        navigate('/UserDashboard');
+        navigate('/userDashboard');
       } 
       if (response.data.token && response.data.user.role === "admin") {
         localStorage.setItem('token', response.data.token);
