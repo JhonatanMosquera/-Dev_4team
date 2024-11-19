@@ -45,7 +45,7 @@ const Register = () => {
                 localStorage.setItem('userName', name);
                 localStorage.setItem('token', response.data.token);
                 // Redirigir al home
-                navigate('/userDashboard');
+                navigate('/');
             } else {
                 setError('Error al registrarse. Intente nuevamente.');
             }
