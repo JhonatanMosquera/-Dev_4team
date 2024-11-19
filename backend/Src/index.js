@@ -15,9 +15,10 @@ const app = express();
 
 // Permite solicitudes desde cualquier origen
 app.use(cors({
-    origin: 'http://localhost:3000', // Especifica el origen permitido
-    credentials: true, // Permitir envío de credenciales (cookies, cabeceras de autorización, etc.)
-  }));
+  origin: ['http://localhost:3000', 'https://e-learning-gfqd.onrender.com'],
+  credentials: true, // Permitir envío de credenciales (cookies, cabeceras de autorización, etc.)
+}));
+
 app.use(cookieParser());
 app.use(morgan('dev'))
 app.use(express.json())
